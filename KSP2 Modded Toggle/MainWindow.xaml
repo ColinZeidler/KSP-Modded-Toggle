@@ -1,0 +1,41 @@
+﻿<Window x:Class="KSP2_Modded_Toggle.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KSP2_Modded_Toggle"
+        mc:Ignorable="d"
+        Title="KSP Manager" Height="250" Width="500">
+    <Grid Margin="10">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <Label>Enable Mods: </Label>
+        <CheckBox Grid.Column="1" x:Name="modsEnabled" Margin="5"></CheckBox>
+        
+        <Label Grid.Row="1">Modded State:</Label>
+        <Label Grid.Row="1" Grid.Column="1" x:Name="modState">Uknown</Label>
+
+        <Label Grid.Row="2">KSP Directory:</Label>
+        <TextBox Grid.Row="3" x:Name="kspDir" TextChanged="KspDirChange"></TextBox>
+
+        <Label Grid.Row="4">Mods Directory:</Label>
+        <TextBox Grid.Row="5" x:Name="modsDir" TextChanged="ModsDirChange"></TextBox>
+
+        <Button Grid.Row="6" Grid.Column="1" Padding="5,0" Click="ButtonApplyClick" >Apply</Button>
+
+    </Grid>
+</Window>
