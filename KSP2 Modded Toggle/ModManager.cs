@@ -1,14 +1,22 @@
 ﻿
 using System;
 using System.IO;
+using System.Text.Json;
+using System.Diagnostics;
 
 namespace KSP2_Modded_Toggle
 {
 
+    public class PathConfigs
+    {
+        public string KspPath { get; set; }
+        public string ModsPath { get; set; }
+    }
+
     internal class ModManager
     {
-        public string kspPath;
-        public string modsPath;
+        public PathConfigs paths;
+        private static string configFile = "configuration.json";
         public bool ModsEnabled { get; private set; }
 
 
@@ -21,15 +29,38 @@ namespace KSP2_Modded_Toggle
 
         public ModManager()
         {
-            kspPath = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Kerbal Space Program 2";
-            modsPath = "";
+            string jsonText = "";
+            PathConfigs pathConfigs = null;
+            try
+            {
+                jsonText = File.ReadAllText(configFile);
+                pathConfigs = JsonSerializer.Deserialize<PathConfigs>(jsonText);
+            } catch (IOException e)
+            {
+                Trace.WriteLine(e.ToString());
+            }
+            if (pathConfigs != null )
+            {
+                paths = pathConfigs;
+            } else
+            {
+                paths = new PathConfigs();
+                paths.KspPath = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Kerbal Space Program 2";
+                paths.ModsPath = "";
+            }
 
             checkMods();
         }
 
+        public void saveConfig()
+        {
+            string jsonString = JsonSerializer.Serialize(paths);
+            File.WriteAllText(configFile, jsonString);
+        }
+
         private void checkMods()
         {
-            ModsEnabled = Directory.Exists(composePath(kspPath, items[0])) && File.Exists(composePath(kspPath, items[1]));
+            ModsEnabled = Directory.Exists(composePath(paths.KspPath, items[0])) && File.Exists(composePath(paths.KspPath, items[1]));
         }
 
         private static string composePath(string dir, string item)
@@ -45,15 +76,15 @@ namespace KSP2_Modded_Toggle
                 {
                     if (Path.EndsInDirectorySeparator(item))
                     {
-                        Directory.CreateSymbolicLink(composePath(this.kspPath, item), composePath(modsPath, item));
+                        Directory.CreateSymbolicLink(composePath(this.paths.KspPath, item), composePath(paths.ModsPath, item));
                     }
                     else
                     {
-                        File.CreateSymbolicLink(composePath(this.kspPath, item), composePath(modsPath, item));
+                        File.CreateSymbolicLink(composePath(this.paths.KspPath, item), composePath(paths.ModsPath, item));
                     }
                 } catch (IOException e)
                 {
-                    Console.WriteLine(e.ToString());
+                    Trace.WriteLine(e.ToString());
                 }
             }
             this.ModsEnabled = true;
@@ -67,15 +98,15 @@ namespace KSP2_Modded_Toggle
                 {
                     if (Path.EndsInDirectorySeparator(item))
                     {
-                        Directory.Delete(composePath(kspPath, item));
+                        Directory.Delete(composePath(paths.KspPath, item));
                     }
                     else
                     {
-                        File.Delete(composePath(this.kspPath, item));
+                        File.Delete(composePath(this.paths.KspPath, item));
                     }
                 } catch (IOException e)
                 {
-                    Console.WriteLine(e.ToString());
+                    Trace.WriteLine(e.ToString());
                 }
             }
             this.ModsEnabled = false;

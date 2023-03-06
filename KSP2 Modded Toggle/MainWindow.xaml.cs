@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Diagnostics;
 
 namespace KSP2_Modded_Toggle
 {
@@ -26,20 +27,22 @@ namespace KSP2_Modded_Toggle
             InitializeComponent();
             modM = new ModManager();
 
-            kspDir.Text = modM.kspPath;
-            modsDir.Text = modM.modsPath;
+            kspDir.Text = modM.paths.KspPath;
+            modsDir.Text = modM.paths.ModsPath;
 
             SetModState();
         }
 
         private void KspDirChange(object sender, RoutedEventArgs e)
         {
-            modM.kspPath = kspDir.Text;
+            modM.paths.KspPath = kspDir.Text;
+            modM.saveConfig();
         }
 
         private void ModsDirChange(object sender, RoutedEventArgs e)
         {
-            modM.modsPath = modsDir.Text;
+            modM.paths.ModsPath = modsDir.Text;
+            modM.saveConfig();
         }
 
         private void SetModState()
@@ -59,15 +62,16 @@ namespace KSP2_Modded_Toggle
         {
             if (modsEnabled.IsChecked == true)
             {
-                Console.WriteLine("Enabling Mods");
+                Trace.WriteLine("Enabling Mods");
                 modM.enableMods();
             } else
             {
-                Console.WriteLine("Disabling Mods");
+                Trace.WriteLine("Disabling Mods");
                 modM.disableMods();
             }
 
             SetModState();
+            modM.saveConfig();
         }
     }
 }
