@@ -5,37 +5,71 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KSP2_Modded_Toggle"
         mc:Ignorable="d"
-        Title="KSP Manager" Height="250" Width="500">
-    <Grid Margin="10">
-
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-
+        Title="KSP Manager" Height="350" Width="500">
+    <Grid Margin="5" >
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Label>Enable Mods: </Label>
-        <CheckBox Grid.Column="1" x:Name="modsEnabled" Margin="5"></CheckBox>
-        
-        <Label Grid.Row="1">Modded State:</Label>
-        <Label Grid.Row="1" Grid.Column="1" x:Name="modState">Uknown</Label>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <ListView x:Name="ModList" SelectionChanged="ModList_SelectionChanged">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn DisplayMemberBinding="{ Binding Path=Name }" Header="Name" Width="Auto"/>
+                        <GridViewColumn DisplayMemberBinding="{ Binding Path=Modded }" Header="Mods" Width="Auto"/>
+                        <GridViewColumn DisplayMemberBinding="{ Binding Path=Active }" Header="Active" Width="Auto"/>
+                    </GridView>
+                </ListView.View>
 
-        <Label Grid.Row="2">KSP Directory:</Label>
-        <TextBox Grid.Row="3" x:Name="kspDir" TextChanged="KspDirChange"></TextBox>
+            </ListView>
+            <Button Grid.Row="1" Padding="5 0" Margin="5 5 5 0" Click="ButtonAddClick">Add Env</Button>
+        </Grid>
 
-        <Label Grid.Row="4">Mods Directory:</Label>
-        <TextBox Grid.Row="5" x:Name="modsDir" TextChanged="ModsDirChange"></TextBox>
+        <Grid Margin="5 0 0 0" Grid.Column="1">
 
-        <Button Grid.Row="6" Grid.Column="1" Padding="5,0" Click="ButtonApplyClick" >Apply</Button>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Row="2">Modded:</Label>
+            <CheckBox Grid.Row="2" Grid.Column="1" x:Name="modsEnabled" Margin="5"></CheckBox>
+
+            <Label Grid.Row="3">Active</Label>
+            <Label Grid.Row="3" Grid.Column="1" x:Name="active">Unknown</Label>
+
+            <Label Grid.Row="4">Name:</Label>
+            <TextBox Grid.Row="5" x:Name="name" Margin="5 0" Grid.ColumnSpan="2"></TextBox>
+
+            <Label Grid.Row="0">KSP Directory:</Label>
+            <TextBox Grid.Row="1" x:Name="kspDir" Margin="5 0" TextChanged="KspDirChange" Grid.ColumnSpan="2"></TextBox>
+
+            <Label Grid.Row="6">Mods Directory:</Label>
+            <TextBox Grid.Row="7" x:Name="modsDir" Margin="5 0" Grid.ColumnSpan="2"></TextBox>
+
+            <Button Grid.Row="8" Padding="5 0" Margin="5" Click="ButtonSaveClick" Grid.ColumnSpan="2" >Save</Button>
+            <Button Grid.Row="9" Padding="5 0" Margin="5" Click="ButtonApplyClick" Grid.ColumnSpan="2" >Apply Mod Env</Button>
+            <Button Grid.Row="10" Padding="5 0" Margin="5" Click="ButtonDeleteClick" Grid.ColumnSpan="2" >Delete</Button>
+
+        </Grid>
     </Grid>
 </Window>
